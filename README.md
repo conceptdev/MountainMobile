@@ -1,3 +1,10 @@
+# Fork for Surface Duo
+
+This fork adds dual-screen support for the Surface Duo (dual-portrait).
+
+![Surface Duo showing sample adapted for the hinge](README-surface-duo.png)
+
+
 # MountainMobile - A Xamarin.Forms UI Challenge
 
 This UI Challenge is based on the fantastic dribble designs by [Henry Price](https://dribbble.com/henryjackprice).  In fact, this combines two of his designs, one for Portrait orientation and one for Landscape orientation.

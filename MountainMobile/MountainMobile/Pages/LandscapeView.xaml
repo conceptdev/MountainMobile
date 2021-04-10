@@ -9,7 +9,7 @@
     xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
     mc:Ignorable="d">
 
-    <Grid
+    <Grid x:Name="landscapeGrid"
         rainbows:DebugRainbow.IsDebug="False"
         ColumnSpacing="0"
         RowSpacing="0">
@@ -45,7 +45,7 @@
             Source="mountain_icon_landscape"
             VerticalOptions="Start" />
 
-        <BoxView
+        <BoxView x:Name="landscapeBoxView"
             Grid.Row="0"
             Grid.Column="1"
             Margin="-70,0,-30,0"

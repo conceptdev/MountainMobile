@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Xamarin.Forms.DualScreen;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -55,6 +57,17 @@ namespace MountainMobile.Pages
             currentHeading.Text = viewModel.CurrentLocation.Title;
             currentBody.Text = viewModel.CurrentLocation.Description;
 
+
+            if (DualScreenInfo.Current.SpanMode == TwoPaneViewMode.Wide)
+            {
+                landscapeGrid.ColumnDefinitions[0].Width = 600; // TODO: align to hinge position exactly
+                landscapeBoxView.Margin = new Thickness(0, 0, -30, 0);
+            }
+            else 
+            {
+                landscapeGrid.ColumnDefinitions[0].Width = 225;
+                landscapeBoxView.Margin = new Thickness(-70, 0, -30, 0);
+            }
         }
 
         private void CycleElements()
@@ -382,6 +395,10 @@ namespace MountainMobile.Pages
             var indicatorY = sideBar.Height - ((indicatorSize * 2) + padding);
             var xStart = (sideBar.Width - (2*padding)) - ((indicatorSize + padding) * viewModel.LocationPages.Count());
 
+            if (DualScreenInfo.Current.SpanMode == TwoPaneViewMode.Wide)
+            {
+                xStart = xStart - 70;
+            }
             for (int i = 0; i < viewModel.LocationPages.Count(); i++)
             {
                 var indicatorX = xStart + ((indicatorSize + padding) * i);
@@ -398,16 +415,27 @@ namespace MountainMobile.Pages
 
         private SKRect GetPreviousButtonRect()
         {
-            SKRect returnRect = new SKRect(SideBarCanvas.CanvasSize.Width - (2*buttonSize), buttonTop,
-                SideBarCanvas.CanvasSize.Width - buttonSize, buttonTop + buttonSize);
-
+            SKRect returnRect = new SKRect(SideBarCanvas.CanvasSize.Width - (2 * buttonSize)
+                , buttonTop
+                , SideBarCanvas.CanvasSize.Width - buttonSize
+                , buttonTop + buttonSize);
+            if (DualScreenInfo.Current.SpanMode == TwoPaneViewMode.Wide)
+            { // prev button sits below the next button, hugging the hinge
+                returnRect = new SKRect(SideBarCanvas.CanvasSize.Width - buttonSize
+                    , buttonTop + buttonSize
+                    , SideBarCanvas.CanvasSize.Width
+                    , buttonTop + (buttonSize * 2));
+            }
+            
             return returnRect;
         }
 
         private SKRect GetNextButtonRect()
         {
-            SKRect returnRect = new SKRect(SideBarCanvas.CanvasSize.Width - buttonSize, buttonTop,
-                SideBarCanvas.CanvasSize.Width, buttonTop + buttonSize);
+            SKRect returnRect = new SKRect(SideBarCanvas.CanvasSize.Width - buttonSize
+                , buttonTop
+                , SideBarCanvas.CanvasSize.Width
+                , buttonTop + buttonSize);
 
             return returnRect;
         }
