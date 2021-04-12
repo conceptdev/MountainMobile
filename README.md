@@ -2,7 +2,7 @@
 
 This fork adds dual-screen support for the Surface Duo (dual-portrait).
 
-![Surface Duo showing sample adapted for the hinge](README-surface-duo.png)
+![Animated Surface Duo example showing sample adapted for the hinge](README-surface-duo.gif)
 
 
 # MountainMobile - A Xamarin.Forms UI Challenge
