@@ -57,10 +57,11 @@ namespace MountainMobile.Pages
             currentHeading.Text = viewModel.CurrentLocation.Title;
             currentBody.Text = viewModel.CurrentLocation.Description;
 
-
+            // SurfaceDuo: align image to the hinge
             if (DualScreenInfo.Current.SpanMode == TwoPaneViewMode.Wide)
             {
-                landscapeGrid.ColumnDefinitions[0].Width = 600; // TODO: align to hinge position exactly
+                var paneWidth = DualScreenInfo.Current.HingeBounds.X;
+                landscapeGrid.ColumnDefinitions[0].Width = paneWidth + 60;
                 landscapeBoxView.Margin = new Thickness(0, 0, -30, 0);
             }
             else 
@@ -397,6 +398,7 @@ namespace MountainMobile.Pages
 
             if (DualScreenInfo.Current.SpanMode == TwoPaneViewMode.Wide)
             {
+                // SurfaceDuo: move to the left of the hinge (the sideBar is already aligned from above)
                 xStart = xStart - 70;
             }
             for (int i = 0; i < viewModel.LocationPages.Count(); i++)
@@ -409,8 +411,6 @@ namespace MountainMobile.Pages
                 SKPaintStyle style = viewModel.LocationPages.IndexOf(viewModel.CurrentLocation) == i ? SKPaintStyle.StrokeAndFill : SKPaintStyle.Stroke;
                 canvas.DrawRect(indicatorRect, new SKPaint() { Color = SKColors.Black, Style = style, StrokeWidth=2 });
             }
-
-
         }
 
         private SKRect GetPreviousButtonRect()
@@ -420,13 +420,14 @@ namespace MountainMobile.Pages
                 , SideBarCanvas.CanvasSize.Width - buttonSize
                 , buttonTop + buttonSize);
             if (DualScreenInfo.Current.SpanMode == TwoPaneViewMode.Wide)
-            { // prev button sits below the next button, hugging the hinge
-                returnRect = new SKRect(SideBarCanvas.CanvasSize.Width - buttonSize
+            {
+                var paneWidth = (float)(DualScreenInfo.Current.HingeBounds.X * density);
+                // SurfaceDuo: prev button sits on the other side of the hinge and down so we can keep nice text margin
+                returnRect = new SKRect(paneWidth - buttonSize
                     , buttonTop + buttonSize
-                    , SideBarCanvas.CanvasSize.Width
+                    , paneWidth
                     , buttonTop + (buttonSize * 2));
             }
-            
             return returnRect;
         }
 
@@ -436,7 +437,13 @@ namespace MountainMobile.Pages
                 , buttonTop
                 , SideBarCanvas.CanvasSize.Width
                 , buttonTop + buttonSize);
-
+            if (DualScreenInfo.Current.SpanMode == TwoPaneViewMode.Wide)
+            {   // SurfaceDuo: shift down for consistency
+                returnRect = new SKRect(SideBarCanvas.CanvasSize.Width - buttonSize
+                    , buttonTop + buttonSize
+                    , SideBarCanvas.CanvasSize.Width
+                    , buttonTop + (buttonSize * 2));
+            }
             return returnRect;
         }
 
